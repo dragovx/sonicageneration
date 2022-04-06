@@ -1,11 +1,11 @@
 <template>
 <!------------------tiles------------------>
 <div>
-  <div>{{info}}</div>
 	<div class="tiles1"  :class="[tiles1.Flashing ? 'flash' : '']" 
                       :style="{backgroundColor: tiles1.BackgroundColor, 
                               color: tiles1.ForegroundColor}" 
                       :title="'Состояние элемента ' + tiles1.tooltip"
+                      v-show="tiles1.Visible"
   >{{tiles1.value}}</div>
 <!------------------TxtArg-------------------->
 <div class="txtarg1">
@@ -82,7 +82,6 @@
 
 import CustomSlider from "vue-custom-range-slider";
 import vClickOutside from 'v-click-outside';
-import axios from 'axios'
 
 export default {
   name: 'Main',
@@ -90,14 +89,18 @@ export default {
     return {
       info: null,
         tiles1:{
+          Name: 'tiles1',
           value: '***',
           ForegroundColor: 'white',
           BackgroundColor: 'blue',
           Flashing: false,
           AlarmInfo: 'Good',
+          Visible: true,
+          Enabled: true,
           tooltip: 'подсказка!',
         },
         txtarg1:{
+          Name: 'txtarg1',
           value: null,
           ForegroundColor: 'white',
           BackgroundColor: 'blue',
@@ -109,6 +112,7 @@ export default {
           disabled: false,
         },
         radioarg1:{
+          Name: 'radioarg1',
           masvalue:[
             {
               item : "item1",
@@ -133,6 +137,7 @@ export default {
           disabled: false,
         },
         passwordarg1:{
+          Name: 'passwordarg1',
           value:"",
           ForegroundColor: 'white',
           BackgroundColor: 'blue',
@@ -142,6 +147,7 @@ export default {
           disabled: false,
         },
         ipadressarg1:{
+          Name: 'ipadressarg1',
           value: null,
           ForegroundColor: 'white',
           BackgroundColor: 'blue',
@@ -155,6 +161,7 @@ export default {
           disabled: false,
         },
         comboarg1:{
+          Name: 'comboarg1',
           selected:'',
           masvalue:[
             {
@@ -180,6 +187,7 @@ export default {
           disabled: false,
         },
         boolarg1:{
+          Name: 'boolarg1',
           value:null,
           ForegroundColor: 'white',
           BackgroundColor: 'blue',
@@ -189,6 +197,7 @@ export default {
           disabled: false,
         },
         bitmaskarg1:{
+          Name: 'bitmaskarg1',
           value: 0,
           masvalue:[
           {
@@ -233,6 +242,7 @@ export default {
           disabled: false,
         },
         sliderarg1:{
+          Name: 'sliderarg1',
           value:'50',
           ForegroundColor: 'white',
           BackgroundColor: 'blue',
@@ -249,17 +259,23 @@ export default {
     },
 
     created() {
-      const getResourse = async () => {
-        // // setInterval(async () => {
-        const response = await fetch(
-          `https://localhost:5001/api/Home?Text=TileTextModel`
-        );
-        const data = await response.text();
-        var obj = (data.slice(0,10))
-        console.log(obj)
-        // // }, 10000);
+      const tiles1param = async () => {
+        setInterval(async () => {
+          const response = await fetch(
+            `https://localhost:5001/api/Home?Text=TileTextModel`
+          );
+          let data = JSON.parse(await response.text())
+          this.tiles1.value = data.text
+          this.tiles1.ForegroundColor = data.fore
+          this.tiles1.BackgroundColor = data.background
+          this.tiles1.Flashing
+          this.tiles1.AlarmInfo
+          this.tiles1.Visible = data.visible
+          this.tiles1.Enabled
+          
+        }, 3000);
       }
-      getResourse();
+      tiles1param();
     },
 
     components: {CustomSlider},
@@ -270,12 +286,13 @@ export default {
         setTimeout(async () => {
           res.Notification = res.value
           res.disabled = false;
+          var obj = { name : res.Name, value : res.value } ;
           let response = await fetch('https://localhost:5001/api/Home', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-          },
-          body: JSON.stringify(res)
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(obj)
         });
 
         let result = await response.json();
