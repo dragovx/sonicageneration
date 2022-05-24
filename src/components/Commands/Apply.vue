@@ -1,18 +1,14 @@
 <template>
-<button>Apply</button>
+  <button>Apply</button>
 </template>
 
 <script>
 export default {
-  name: 'apply',
-  data () {
-    return {
-        
-    }
+  name: "app",
+  data() {
+    return {};
   },
-}
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

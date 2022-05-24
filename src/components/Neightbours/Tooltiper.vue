@@ -1,53 +1,56 @@
 <template>
-<div class="button"   :style="cssProps" 
-                      :title="'Состояние элемента ' + button.tooltip"
-                      v-show="button.Visible"
-  ><p>{{button.value}}</p></div>
+  <div class="button" :style="cssProps" :title="'Состояние элемента ' + button.tooltip" v-show="button.Visible" @click="some">
+    <p>{{ button.value }}</p>
+  </div>
 </template>
 
 <script>
 export default {
-  name: '',
-  props:['params'],
-  data () {
+  name: "app",
+  props: ["params", "windowWidth", "subscreensize"],
+  data() {
     return {
-     button:{
-          Name: 'button',
-          value: this.params.text,
-          ForegroundColor: this.params.foreground,
-          BackgroundColor: this.params.background,
-          AlarmInfo: 'Good',
-          Visible: true,
-          Enabled: true,
-          tooltip: 'подсказка!',
-        },
+      button: {
+        Name: "button",
+        value: this.params.text,
+        ForegroundColor: this.params.foreground,
+        BackgroundColor: this.params.background,
+        AlarmInfo: "Good",
+        Visible: true,
+        Enabled: true,
+        tooltip: "подсказка!",
+      },
+    };
+  },
+  methods: {
+    some(){
+      this.$parent.pushjson(this.params.path)
     }
   },
-
   computed: {
-    cssProps(){
+    cssProps() {
       return {
-        '--x':this.params.x + 'px',
-        '--y':this.params.y + 'px',
-        '--z':this.params.z,
-        '--width': this.params.width + 'px',
-        '--height': this.params.height + 'px',
-        '--backgroundColor': '#' + this.button.BackgroundColor.slice(2,7) + this.button.BackgroundColor.slice(0,1), 
-        '--color': this.button.ForegroundColor,
-        '--borderThickness': this.params.borderThickness,
-        '--borderBrush': this.params.borderBrush,
-        '--scale': this.params.scale,
-        '--borderRadius': this.params.borderRadius,
-        '--fontSize': this.params.fontSize + 'px',
-      }
-    }
+        "--x": this.params.x / 1 * this.subscreensize + "px",
+        "--y": this.params.y / 1 * this.subscreensize + "px",
+        "--z": this.params.z,
+        "--width": this.params.width / 1 * this.subscreensize + "px",
+        "--height": this.params.height / 1 * this.subscreensize + "px",
+        "--backgroundColor": "#" + this.button.BackgroundColor,
+        "--color": this.button.ForegroundColor,
+        "--borderThickness": this.params.borderThickness,
+        "--borderBrush": this.params.borderBrush,
+        "--scale": this.params.scale,
+        "--borderRadius": this.params.borderRadius,
+        "--fontSize": this.params.fontSize / 1 * this.subscreensize + "px",
+      };
+    },
   },
-}
+};
 </script>
 
 <style scoped>
 .button {
-    /*** Для эксплорера*/
+  /*** Для эксплорера*/
   -ms-user-select: none;
 
   /*** Для мозилы*/
@@ -77,18 +80,18 @@ export default {
   font-size: var(--fontSize);
 }
 
-p { 
-  margin: auto; /* Important */ 
-  text-align: center; 
+p {
+  margin: auto; /* Important */
+  text-align: center;
 }
 
-.button:hover{
+.button:hover {
   background-color: var(--backgroundColor);
   filter: brightness(80%);
+  background-blend-mode: da;
 }
-.button:active{
+.button:active {
   background-color: var(--backgroundColor);
   filter: brightness(150%);
 }
-
 </style>

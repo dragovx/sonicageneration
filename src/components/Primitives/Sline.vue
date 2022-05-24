@@ -1,20 +1,23 @@
 <template>
-  <line class="line" :x1=params.x :y1='[params.Y1==0 ? params.y : params.y+params.height]' :x2=params.x+params.width :y2='[params.Y1==0 ? params.y+params.height : params.y]' :stroke=params.foreground :stroke-width=params.thickness />
-  <!-- Если вы не укажете цвет контура,
-       линия не будет видна -->
+  <line
+    class="line"
+    :x1="params.x"
+    :y1="[params.Y1 == 0 ? params.y : params.y + params.height]"
+    :x2="params.x + params.width"
+    :y2="[params.Y1 == 0 ? params.y + params.height : params.y]"
+    :stroke="['#' + params.foreground]"
+    :stroke-width="params.thickness"
+  />
 </template>
 
 <script>
 export default {
-  name: 'sline',
-  props:['params'],
-  data () {
-    return {
-     
-    }
+  name: "app",
+  props: ["params"],
+  data() {
+    return {};
   },
-}
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
