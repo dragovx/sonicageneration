@@ -1,12 +1,12 @@
 <template>
   <line
     class="line"
-    :x1="params.x"
-    :y1="[params.y1 == 0 ? params.y : params.y + params.height]"
-    :x2="params.x + params.width"
-    :y2="[params.y1 == 0 ? params.y + params.height : params.y]"
+    :x1="params.x * this.$parent.multiplier"
+    :y1="[params.y1 == 0 ? params.y : params.y + params.height] * this.$parent.multiplier"
+    :x2="(params.x + params.width) * this.$parent.multiplier"
+    :y2="[params.y1 == 0 ? params.y + params.height : params.y] * this.$parent.multiplier"
     :stroke="['#' + params.foreground]"
-    :stroke-width="params.thickness"
+    :stroke-width="params.thickness * this.$parent.multiplier"
   />
 </template>
 

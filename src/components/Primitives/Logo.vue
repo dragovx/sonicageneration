@@ -15,11 +15,10 @@ export default {
   computed:{
     cssProps() {
       return {
-        "--x": this.params.x / 1 + "px",
-        "--y": this.params.y / 1 + "px",
-        "--z": -5,
-        "--width": this.params.width / 1 + "px",
-        "--height": this.params.height / 1 + "px",
+        "--x": this.params.x * this.$parent.multiplier  + "px",
+        "--y": this.params.y * this.$parent.multiplier + "px",
+        "--width": this.params.width * this.$parent.multiplier * this.params.scale + "px",
+        "--height": this.params.height * this.$parent.multiplier * this.params.scale + "px",
       }
     }
   }
@@ -29,7 +28,6 @@ export default {
 <style scoped>
 .logo{
     position: absolute;
-    z-index: var(--z);
     left: var(--x);
     top: var(--y);
     width: var(--width);

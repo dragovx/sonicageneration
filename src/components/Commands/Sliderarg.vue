@@ -1,12 +1,6 @@
 <template>
   <div class="sliderarg1" :style="[ sliderarg1.Orientation == 'Vertical' ? { transform: 'rotate(-90deg)' } : '', ]">
-    <div
-      :style="[
-        sliderarg1.Orientation == 'Vertical'
-          ? { transform: 'rotate(90deg)' }
-          : '',
-      ]"
-    >
+    <div :style="[ sliderarg1.Orientation == 'Vertical' ? { transform: 'rotate(90deg)' } : '', ]">
       {{ sliderarg1.min }}
     </div>
     <div>

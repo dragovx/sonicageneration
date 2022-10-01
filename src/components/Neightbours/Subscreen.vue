@@ -1,17 +1,23 @@
 <template>
 <div class="Subscreen" :style="cssProps">
-    <window  :myJson = params.properties.screen :subscreensize ="[this.params.properties.height/this.params.properties.screen.canvas.height]" :boolback="false" />
+    <window  :myJson = params.properties.screen :subscreensize = subscreensize :boolback="false" typewindow="subscreen" :namewindow="namewindow" :subscreenname="this.params.name"/>
+    <!-- <window  :myJson = params.properties.screen :subscreensize = this.params.properties.scale :boolback="false" /> -->
 </div>
 </template>
 
 <script>
 
 import { defineAsyncComponent } from 'vue'
-const Window = defineAsyncComponent (() => import('../Window.vue'))
+const Window = defineAsyncComponent (() => import('../Components/Window.vue'))
 
 export default {
   name: 'Subscreen',
-  props:['params'],
+  data(){
+    return{
+      subscreensize: 1
+    }
+  },
+  props:['params', 'namewindow'],
   components: {
     Window
   },
@@ -19,21 +25,22 @@ export default {
   computed: {
     cssProps() {
       return {
-        "--x": this.params.properties.x / 1 + "px",
-        "--y": this.params.properties.y / 1 + "px",
+        "--x": this.params.properties.x * this.$parent.multiplier + "px",
+        "--y": this.params.properties.y * this.$parent.multiplier + "px",
         "--z": this.params.properties.z,
-        "--width": this.params.properties.width / 1 + "px",
-        "--height": this.params.properties.height / 1 + "px",
+        "--width": this.params.properties.width * this.$parent.multiplier + "px",
+        "--height": this.params.properties.height * this.$parent.multiplier + "px",
       }
     }
   },
   created(){
-    console.log(this.params.properties.screen)
+    if (this.params.properties.width > this.params.properties.screen.canvas.width) {
+      this.subscreensize = this.params.properties.height/(this.params.properties.screen.canvas.height) * this.$parent.multiplier
+    } else {
+      this.subscreensize = this.params.properties.width/(this.params.properties.screen.canvas.width) * this.$parent.multiplier
+    }
   },
   methods: {
-    some(){
-      this.$parent.pushjson(this.params.path)
-    }
   },
 }
 </script>
@@ -41,7 +48,6 @@ export default {
 <style scoped>
   .Subscreen{
     position: absolute;
-    z-index: var(--z);
     left: var(--x);
     top: var(--y);
     width: var(--width);
