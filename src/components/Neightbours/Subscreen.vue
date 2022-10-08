@@ -47,10 +47,12 @@ export default {
 
 <style scoped>
   .Subscreen{
+    box-sizing: border-box;
     position: absolute;
     left: var(--x);
     top: var(--y);
     width: var(--width);
     height: var(--height);
+    border: solid 5px #25252500;
   }
 </style>

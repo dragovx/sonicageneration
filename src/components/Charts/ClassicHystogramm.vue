@@ -1,6 +1,5 @@
 <template>
   <div id="chart" :style="cssProps">
-    <button @click="some">123</button>
     <apexchart type="bar" width="100%" height="100%" :options="chartOptions" :series="series" id="graph"></apexchart>
   </div>
 </template>

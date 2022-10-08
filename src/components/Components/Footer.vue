@@ -180,7 +180,7 @@ export default {
     clickfooter() {
       this.tablestate = !this.tablestate;
       // if (this.tablestate){
-      //   this.$store.dispatch("changemainheight", 167)
+      //   this.$store.dispatch("changemainheight", 170)
       // } else {
       //   this.$store.dispatch("changemainheight", -170)
       // }

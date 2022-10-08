@@ -76,7 +76,6 @@ export default {
   },
 
   created() {
-    console.log(this.myJson)
     this.width = window.innerWidth-2;
     this.height = window.innerHeight ;
     this.windowname = '>:Header'
@@ -122,7 +121,9 @@ export default {
   height: var(--height);
   color: white;
   background-color: var(--background);
+  /* background-color: #252525FF; */
   border: solid var(--borderThickness) white;
+  /* border: solid var(--borderThickness) #252525ff; */
   border-radius: var(--borderRadius);
 }
 .backgroundmain{

@@ -47,7 +47,6 @@ export default createStore({
       );
       const data = JSON.parse(await response.text());
       state.tick = data.tick;
-      console.log(data)
       state.main = (data);
 
       let response2 = await fetch(
@@ -79,6 +78,16 @@ export default createStore({
 
       this.dispatch("updateElems", ">:\\" + data.name);
       this.dispatch("updateElems", ">:\\" + data2.name);
+
+      var mas = JSON.parse(sessionStorage.getItem("localArray"))
+      if (mas) {
+        mas.forEach((element,index) =>{
+          console.log(index)
+          setTimeout(() => {
+            this.dispatch('addElemsfromStorage', JSON.parse(element))
+          }, 50*index);
+        })
+      }
     },
 
     async updateElems(state, name) {
@@ -122,19 +131,41 @@ export default createStore({
 
     async addElems(state, data) {
       let response = await fetch(
-        `http://${state.ip}/api/nodes/${btoa(data.name)}/current`
+        `http://${state.ip}/api/nodes/${btoa(unescape(encodeURIComponent(data.name)))}/current`
       );
       if (response.ok){
-        console.log(`http://${state.ip}/api/nodes/${btoa(data.name)}/current`)
+        console.log(`http://${state.ip}/api/nodes/${btoa(unescape(encodeURIComponent(data.name)))}/current`)
         const res = JSON.parse(await response.text());
         res.title = data.title
         res.screenPercentage = data.screenPercentage
         res.typename = data.name
         state.elems.push(res);
         this.dispatch("updateElems", data.name);
+        var localArray = sessionStorage.getItem('localArray')
+        if (localArray) {
+          var localArray = JSON.parse(sessionStorage.getItem("localArray"))
+          localArray.push(JSON.stringify({name: data.name, title: data.title, screenPercentage: data.screenPercentage}))
+          sessionStorage.setItem('localArray', JSON.stringify(localArray))
+        } else {
+          var localArray = [JSON.stringify({name: data.name, title: data.title, screenPercentage: data.screenPercentage})]
+          sessionStorage.setItem('localArray', JSON.stringify(localArray))
+        }
+        
       } else {
         alert("Ошибка HTTP: " + response.status)
       }
+    },
+
+    async addElemsfromStorage(state, data){
+      let response = await fetch(
+        `http://${state.ip}/api/nodes/${btoa(data.name)}/current`
+      );
+      const res = JSON.parse(await response.text());
+        res.title = data.title
+        res.screenPercentage = data.screenPercentage
+        res.typename = data.name
+        state.elems.push(res);
+        this.dispatch("updateElems", data.name);
     },
 
     closewindow(state, name) {
@@ -143,6 +174,9 @@ export default createStore({
       clearInterval(state.tickmas[index].interval);
       clearTimeout(state.tickmas[index].timeout)
       state.tickmas.splice(index,1)
+      var localArray = JSON.parse(sessionStorage.getItem("localArray"))
+      localArray.pop()
+      sessionStorage.setItem('localArray', JSON.stringify(localArray))
     },
 
     changemainheight(state, h){
@@ -164,6 +198,7 @@ export default createStore({
 
     innactivereset(state){
       state.elems = []
+      sessionStorage.clear()
     },
 
     // changemain(state, name){
@@ -182,6 +217,9 @@ export default createStore({
     },
     addElems({ commit }, elems) {
       commit("addElems", elems);
+    },
+    addElemsfromStorage({ commit }, elems) {
+      commit("addElemsfromStorage", elems);
     },
     closewindow({ commit }, elems) {
       commit("closewindow", elems);

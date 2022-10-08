@@ -212,7 +212,6 @@ export default {
         this.imagestrans.push(res);
       }
       if (res.type.startsWith("primitives/Logo")) {
-        console.log('sd')
         this.imageslogo.push(res);
       }
       if (res.type.startsWith("charts") || (res.type.startsWith("view/ClassicHystogramm"))){

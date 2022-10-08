@@ -9,9 +9,6 @@
       <div id="mainbody" :style="cssProps">
         <imagetrans v-for="elem in imagestrans" :key="elem.name" :params="elem.properties"/>
         <imagelogo v-for="elem in imageslogo" :key="elem.name" :params="elem.properties"/>
-        <svg v-show="this.lines.length" :height="this.myJson.canvas.height * this.multiplier" :width="this.myJson.canvas.width * this.multiplier" xmlns="http://www.w3.org/2000/svg" style="position: absolute; left: 0px; top: 0px;">
-          <sline v-for="line in lines" :key="line.name" :params="line.properties" />
-        </svg>
         <tiles v-for="elem  in tiless" :key="elem.name" :params="elem.properties" :name="elem.name" :screenPercentage="this.myJson.screenPercentage" :windowWidth="this.myJson.canvas.width" :windowHeight="this.myJson.canvas.height" :type="elem.type"/>
         <subscreen v-for="elem in subscreens" :key="elem.name" :params="elem" :name="elem.type" :namewindow="this.windowname"/>
         <!-- <txtarg /> -->
@@ -23,6 +20,9 @@
         <!-- <bitmaskarg></bitmaskarg> -->
         <!-- <sliderarg></sliderarg> -->
         <!-- <apply></apply> -->
+        <svg v-show="this.lines.length" :height="this.myJson.canvas.height * this.multiplier" :width="this.myJson.canvas.width * this.multiplier" xmlns="http://www.w3.org/2000/svg" style="position: absolute; left: 0px; top: 0px;">
+          <sline v-for="line in lines" :key="line.name" :params="line.properties" />
+        </svg>
         <tooltiper v-for="elem in tooltipers" :key="elem.name" :params="elem"/>
         <chart v-for="elem in charts" :key="elem.name" :params="elem"/>
         <helper v-for="elem in helper" :key="elem.name" :params="elem.properties"/>
@@ -182,7 +182,7 @@ export default {
     closejson(){
       this.$store.dispatch('closewindow', this.windowname)
       window.removeEventListener('resize', this.reportWindowSize)
-    }
+    },
   },
 
   created() {
@@ -220,7 +220,7 @@ export default {
       {
         this.tooltipers.push(res);  
       }
-      if (res.type.startsWith("neightbours/Subscreen")) {
+      if (res.type.startsWith("neightbours/Subscreen") || res.type.startsWith("neightbours/Renter")) {
         this.subscreens.push(res);
       }
       if (res.type.startsWith("primitives/Image")) {

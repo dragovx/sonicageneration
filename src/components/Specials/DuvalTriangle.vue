@@ -51,6 +51,7 @@ export default {
   methods:{
     drawDuval(){
     const { ctx } = this;
+    var { imageData } = this;
     var v0={x:(114-this.minx)*this.multiplierx,y:(366-this.miny)*this.multipliery};
     var v1={x:(306-this.minx)*this.multiplierx,y:(30-this.miny)*this.multipliery};
     var v2={x:(498-this.minx)*this.multiplierx,y:(366-this.miny)*this.multipliery};
@@ -99,27 +100,14 @@ export default {
       var labelfontface='verdana';
       var labelpadding=3;
 
-      // pre-create a canvas-image of the arrowhead
-      var arrowheadLength=10;
-      var arrowheadWidth=8;
-      var arrowhead=document.createElement('canvas');
-      // premakeArrowhead();
-
-      // var legendTexts=['PD = Partial Discharge','T1 = Thermal fault < 300 celcius','...'];
-
-
-    // start drawing
-    /////////////////////
-
-
     // draw colored segments inside triangle
     for(var i=0;i<segments.length;i++){
       drawSegment(segments[i]);
     }
     // draw ticklines
     ticklines(v0,v1,10,0,20);
-    ticklines(v1,v2,10,Math.PI*3/4,20);
-    ticklines(v2,v0,10,Math.PI*5/4,20);
+    ticklines(v1,v2,10,Math.PI*2/3,20);
+    ticklines(v2,v0,10,Math.PI*4/3,20);
     // molecules
     // moleculeLabel(v0,v1,100,Math.PI,'% CH4');
     // moleculeLabel(v1,v2,100,0,'% C2H4');
@@ -128,13 +116,13 @@ export default {
     drawTriangle(triangle);
     // draw legend
     // drawLegend(legendTexts,10,10,12.86);
-    const today = new Date();
-    var currentDateMilliseconds = today.getMilliseconds();
-    var imageData = ctx.getImageData(0,0,410,400);
-    this.drawDot(this.params.CH4, this.params.CH4X, this.params.CH4Y, this.params.C2H2, this.params.C2H2X, this.params.C2H2Y, this.params.C2H4, this.params.C2H4X, this.params.C2H4Y)
-    setTimeout(() => {
-      ctx.putImageData(imageData, 0, 0);
-    }, 990 - currentDateMilliseconds);
+    // const today = new Date();
+    // var currentDateMilliseconds = today.getMilliseconds();
+    // imageData = ctx.getImageData(0,0,410,400);
+    // this.drawDot(this.params.CH4, this.params.CH4X, this.params.CH4Y, this.params.C2H2, this.params.C2H2X, this.params.C2H2Y, this.params.C2H4, this.params.C2H4X, this.params.C2H4Y)
+    // setTimeout(() => {
+    //   ctx.putImageData(imageData, 0, 0);
+    // }, 990 - currentDateMilliseconds);
     function drawSegment(s){
       // draw and fill the segment path
       ctx.beginPath();
@@ -154,40 +142,6 @@ export default {
       }else{
         boxedLabel(s,labelfontsize,labelfontface,labelpadding);
       }
-    }
-
-    function moleculeLabel(start,end,offsetLength,angle,text){
-      ctx.textAlign='center';
-      ctx.textBaseline='middle'
-      ctx.font='14px verdana';
-      var dx=end.x-start.x;
-      var dy=end.y-start.y;
-      var x0=parseInt(start.x+dx*0.50);
-      var y0=parseInt(start.y+dy*0.50);
-      var x1=parseInt(x0+offsetLength*Math.cos(angle));
-      var y1=parseInt(y0+offsetLength*Math.sin(angle));
-      ctx.fillStyle='white';
-      ctx.fillText(text,x1,y1);
-      // arrow
-      var x0=parseInt(start.x+dx*0.35);
-      var y0=parseInt(start.y+dy*0.35);
-      var x1=parseInt(x0+50*Math.cos(angle));
-      var y1=parseInt(y0+50*Math.sin(angle));
-      var x2=parseInt(start.x+dx*0.65);
-      var y2=parseInt(start.y+dy*0.65);
-      var x3=parseInt(x2+50*Math.cos(angle));
-      var y3=parseInt(y2+50*Math.sin(angle));
-      ctx.beginPath();
-      ctx.moveTo(x1,y1);
-      ctx.lineTo(x3,y3);
-      ctx.strokeStyle='white';
-      ctx.lineWidth=1;
-      ctx.stroke();
-      var angle=Math.atan2(dy,dx);
-      ctx.translate(x3,y3);
-      ctx.rotate(angle);
-      ctx.drawImage(arrowhead,-arrowheadLength,-arrowheadWidth/2);
-      ctx.setTransform(1,0,0,1,0,0);
     }
 
     function boxedLabel(s,fontsize,fontface,padding){
@@ -260,19 +214,6 @@ export default {
       }
     }
 
-    function premakeArrowhead(){
-      var actx=arrowhead.getContext('2d');
-      arrowhead.width=arrowheadLength;
-      arrowhead.height=arrowheadWidth;
-      actx.beginPath();
-      actx.moveTo(0,0);
-      actx.lineTo(arrowheadLength,arrowheadWidth/2);
-      actx.lineTo(0,arrowheadWidth);
-      actx.closePath();
-      actx.fillStyle='white';
-      actx.fill();
-    }
-
     function drawTriangle(t){
       ctx.beginPath();
       ctx.moveTo(t[0].x,t[0].y);
@@ -329,6 +270,7 @@ export default {
   mounted(){
     this.ctx = this.$refs.canvas.getContext('2d');
     this.drawDuval()
+    var { imageData } = this;
   },
   computed: {
     cssProps() {
