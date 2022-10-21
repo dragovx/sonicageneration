@@ -74,10 +74,11 @@ export default {
         "--borderBrush": "#" + this.params.borderBrush,
         "--scale": this.params.scale,
         "--align": this.params.hAlignment,
+        "--valign": [(this.params.vAlignment == 'Stretch' || this.params.vAlignment == 'Top') ? [(this.params.angle == 270 ||  this.params.angle ==-90) ? 'auto' : ''] : 'auto'],
         "--fontSize": [this.params.fontSize == 0 ? 14 / 1 : this.params.fontSize / 1]  * this.$parent.multiplier + "px",
-        "--margin": this.params.margin.split(" : ")[0] + "px",
+        "--margin": [(this.params.vAlignment == 'Stretch' || this.params.vAlignment == 'Top') ? '' : this.params.margin.split(" : ")[0] + "px"],
         "--borderRadius": this.params.borderRadius * this.$parent.multiplier + "px",
-        "--vertical-rl": [this.params.angle == 270 ? 'vertical-rl' : 'horizontal-tb']
+        "--vertical-rl": [(this.params.angle == 270 ||  this.params.angle ==-90) ? 'vertical-rl' : 'horizontal-tb']
       };
     },
   },
@@ -102,11 +103,10 @@ export default {
   border-width: var(--borderThickness);
   border-Radius: var(--borderRadius);
   border-style: solid;
-  justify-content: flex-start;
 }
 p {
   writing-mode: var(--vertical-rl);
-  margin: auto;
+  margin: var(--valign);
   margin-left: var(--margin);
   width: 100%; 
   text-align: var(--align);

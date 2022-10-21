@@ -91,6 +91,27 @@ export default createStore({
     },
 
     async updateElems(state, name) {
+
+      function encript(values) {
+        const  Alphabet = "12345678" + "9ABDEFGH" + "JKLMNPQR" + "STUVWXYZ";
+        var bitsCount = 8 * values.length;
+        var ans = new Array(Math.trunc(bitsCount / 5) + (bitsCount%5==0?0:1));
+        for (let i = 0; i < ans.length; i++) {
+            var bitNum = i * 5;
+            var byteNum = Math.trunc(bitNum / 8);
+            var byteOffset = bitNum % 8;  
+            var symbol = values[byteNum] >> byteOffset;
+            if (byteOffset > 3 && byteNum<(values.length-1))
+            {
+                var symbolOffset = 8 - byteOffset;
+                symbol |= values[byteNum+1]<<symbolOffset;
+            }
+            symbol &= 0b11111; // cut a tail
+            ans[i] = Alphabet[symbol];
+        }
+        return ans.join("")
+      }
+
       const today = new Date();
       var currentDateMilliseconds = today.getMilliseconds();
       let ticknumber = state.tickmas.length
@@ -101,7 +122,7 @@ export default createStore({
         var xyz = setInterval(async () => {
           state.tickmas[ticknumber].mas = []
           let response = await fetch(
-            `http://${state.ip}/api/nodes/${btoa(name)}/delta/0/${
+            `http://${state.ip}/api/nodes/${encript((new TextEncoder()).encode(name))}/delta/0/${
               state.tickmas[ticknumber].tick
             }`
           );
@@ -130,11 +151,32 @@ export default createStore({
     },
 
     async addElems(state, data) {
+
+      function encript(values) {
+        const  Alphabet = "12345678" + "9ABDEFGH" + "JKLMNPQR" + "STUVWXYZ";
+        var bitsCount = 8 * values.length;
+        var ans = new Array(Math.trunc(bitsCount / 5) + (bitsCount%5==0?0:1));
+        for (let i = 0; i < ans.length; i++) {
+            var bitNum = i * 5;
+            var byteNum = Math.trunc(bitNum / 8);
+            var byteOffset = bitNum % 8;  
+            var symbol = values[byteNum] >> byteOffset;
+            if (byteOffset > 3 && byteNum<(values.length-1))
+            {
+                var symbolOffset = 8 - byteOffset;
+                symbol |= values[byteNum+1]<<symbolOffset;
+            }
+            symbol &= 0b11111; // cut a tail
+            ans[i] = Alphabet[symbol];
+        }
+        return ans.join("")
+      }
+
       let response = await fetch(
-        `http://${state.ip}/api/nodes/${btoa(unescape(encodeURIComponent(data.name)))}/current`
+        `http://${state.ip}/api/nodes/${encript((new TextEncoder()).encode(data.name))}/current`
       );
       if (response.ok){
-        console.log(`http://${state.ip}/api/nodes/${btoa(unescape(encodeURIComponent(data.name)))}/current`)
+        console.log(`http://${state.ip}/api/nodes/${encript((new TextEncoder()).encode(data.name))}/current`)
         const res = JSON.parse(await response.text());
         res.title = data.title
         res.screenPercentage = data.screenPercentage
@@ -157,8 +199,27 @@ export default createStore({
     },
 
     async addElemsfromStorage(state, data){
+      function encript(values) {
+        const  Alphabet = "12345678" + "9ABDEFGH" + "JKLMNPQR" + "STUVWXYZ";
+        var bitsCount = 8 * values.length;
+        var ans = new Array(Math.trunc(bitsCount / 5) + (bitsCount%5==0?0:1));
+        for (let i = 0; i < ans.length; i++) {
+            var bitNum = i * 5;
+            var byteNum = Math.trunc(bitNum / 8);
+            var byteOffset = bitNum % 8;  
+            var symbol = values[byteNum] >> byteOffset;
+            if (byteOffset > 3 && byteNum<(values.length-1))
+            {
+                var symbolOffset = 8 - byteOffset;
+                symbol |= values[byteNum+1]<<symbolOffset;
+            }
+            symbol &= 0b11111; // cut a tail
+            ans[i] = Alphabet[symbol];
+        }
+        return ans.join("")
+      }
       let response = await fetch(
-        `http://${state.ip}/api/nodes/${btoa(data.name)}/current`
+        `http://${state.ip}/api/nodes/${encript((new TextEncoder()).encode(data.name))}/current`
       );
       const res = JSON.parse(await response.text());
         res.title = data.title
@@ -169,6 +230,7 @@ export default createStore({
     },
 
     closewindow(state, name) {
+      
       const index = state.tickmas.findIndex((t) => t.name === name)
       state.elems.pop();
       clearInterval(state.tickmas[index].interval);

@@ -188,6 +188,7 @@ export default {
     this.$store.dispatch('mainmultiplier', [true, this.multiplier])
     this.myJson.widgets.forEach(element => {
       let res = element;
+      
       if (res.type.startsWith("primitives/Line")) {
         this.lines.push(res);
       }
@@ -214,7 +215,8 @@ export default {
       if (res.type.startsWith("primitives/Logo")) {
         this.imageslogo.push(res);
       }
-      if (res.type.startsWith("charts") || (res.type.startsWith("view/ClassicHystogramm"))){
+      if (res.type.startsWith("charts") || (res.type.startsWith("view/ClassicHystogramm")) || (res.type.startsWith("trends/TrendViewer"))){
+        
         this.charts.push(res);
       }
       if (res.type.startsWith("primitives/Helper")) {

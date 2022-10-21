@@ -9,8 +9,10 @@
       <div id="mainbody" :style="cssProps">
         <imagetrans v-for="elem in imagestrans" :key="elem.name" :params="elem.properties"/>
         <imagelogo v-for="elem in imageslogo" :key="elem.name" :params="elem.properties"/>
+        <svg v-show="this.lines.length" :height="this.myJson.canvas.height * this.multiplier" :width="this.myJson.canvas.width * this.multiplier" xmlns="http://www.w3.org/2000/svg" style="position: absolute; left: 0px; top: 0px;">
+          <sline v-for="line in lines" :key="line.name" :params="line.properties" />
+        </svg>
         <tiles v-for="elem  in tiless" :key="elem.name" :params="elem.properties" :name="elem.name" :screenPercentage="this.myJson.screenPercentage" :windowWidth="this.myJson.canvas.width" :windowHeight="this.myJson.canvas.height" :type="elem.type"/>
-        <subscreen v-for="elem in subscreens" :key="elem.name" :params="elem" :name="elem.type" :namewindow="this.windowname"/>
         <!-- <txtarg /> -->
         <!-- <radioarg></radioarg> -->
         <!-- <passwordarg></passwordarg> -->
@@ -20,9 +22,8 @@
         <!-- <bitmaskarg></bitmaskarg> -->
         <!-- <sliderarg></sliderarg> -->
         <!-- <apply></apply> -->
-        <svg v-show="this.lines.length" :height="this.myJson.canvas.height * this.multiplier" :width="this.myJson.canvas.width * this.multiplier" xmlns="http://www.w3.org/2000/svg" style="position: absolute; left: 0px; top: 0px;">
-          <sline v-for="line in lines" :key="line.name" :params="line.properties" />
-        </svg>
+        
+        <subscreen v-for="elem in subscreens" :key="elem.name" :params="elem" :name="elem.type" :namewindow="this.windowname"/>
         <tooltiper v-for="elem in tooltipers" :key="elem.name" :params="elem"/>
         <chart v-for="elem in charts" :key="elem.name" :params="elem"/>
         <helper v-for="elem in helper" :key="elem.name" :params="elem.properties"/>
@@ -229,7 +230,7 @@ export default {
       if (res.type.startsWith("primitives/Logo")) {
         this.imageslogo.push(res);
       }
-      if (res.type.startsWith("charts") || (res.type.startsWith("view/ClassicHystogramm"))){
+      if (res.type.startsWith("charts") || (res.type.startsWith("view/ClassicHystogramm")) || (res.type.startsWith("trends/TrendViewer"))){
         this.charts.push(res);
       }
       if (res.type.startsWith("primitives/Helper")) {
