@@ -20,6 +20,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### Starting development
 ```
-serve -l *port* -s dist
+serve -s dist
 ```
 
