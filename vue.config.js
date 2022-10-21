@@ -1,5 +1,6 @@
 module.exports = {
   devServer: {
-    allowedHosts: 'all'
+    // allowedHosts: 'all'
+    port: 8080
   }
 }
