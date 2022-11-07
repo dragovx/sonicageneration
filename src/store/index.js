@@ -1,6 +1,7 @@
 
 import { createStore } from "vuex";
-import ip from '../assets/ip.json'
+// import ip from '../assets/ip.json'
+import ip from 'C:/Users/Baks/IdeaProjects/aaa/ip.json'
 import moment from "moment";
 
 export default createStore({
@@ -182,6 +183,7 @@ export default createStore({
         res.screenPercentage = data.screenPercentage
         res.typename = data.name
         state.elems.push(res);
+        console.log(data.name)
         this.dispatch("updateElems", data.name);
         var localArray = sessionStorage.getItem('localArray')
         if (localArray) {
