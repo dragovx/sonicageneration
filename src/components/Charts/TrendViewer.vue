@@ -307,20 +307,40 @@ export default {
       }
     console.log(encript((new TextEncoder()).encode(this.chart.Name)))
     console.log(this.chart.Name)
-    let response = await fetch('http://localhost:5201/api/nodes/main/widget/NLWB7RKEQBUBQVPEL4/query/trend-history', {
-      // headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json',
-      // },
-      mode: 'no-cors',
-      method: 'POST',
-      cache: 'no-cache',
-      body: {
-        "lowerTime": "123",
-        "upperTime": "123"
-      },
-    });
-    console.log(response)
+    // let response = await fetch('http://localhost:5201/api/nodes/main/widget/NLWB7RKEQBUBQVPEL4/query/trend-history', {
+    //   headers: {
+    //       'Accept': 'text/plain',
+    //       'contentType': 'application/json-patch+json',
+    //   },
+    //   mode: 'no-cors',
+    //   method: 'POST',
+    //   cache: 'no-cache',
+    //   body: {
+    //     "lowerTime": "123",
+    //     "upperTime": "123"
+    //   },
+    // });
+    // console.log(response)
+
+    var url = "http://localhost:5201/api/nodes/main/widget/NLWB7RKEQBUBQVPEL4/query/trend-history";
+
+var xhr = new XMLHttpRequest();
+xhr.open("POST", url);
+
+xhr.setRequestHeader("Content-Type", "application/json");
+
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+   }};
+
+var data = `{
+    "lowerTime": "2022-09-20T09:07:21",
+    "upperTime": "2023-11-20T09:07:21"
+}`;
+
+xhr.send(data);
 
     // this.params.sectors.forEach((element) => {
     //   this.chartOptions.xaxis.categories.push(element.alias)
