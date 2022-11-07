@@ -1,7 +1,7 @@
 
 import { createStore } from "vuex";
 // import ip from '../assets/ip.json'
-import ip from 'C:/Users/Baks/IdeaProjects/aaa/ip.json'
+import ip from '../assets/ip.json'
 import moment from "moment";
 
 export default createStore({
